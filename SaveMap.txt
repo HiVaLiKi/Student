@@ -1,0 +1,5 @@
+Student,name, fn, year, program, group, averageGrade, numOfGrades, status, CourseName=grade
+
+Program, name
+
+Course, programName, name, type, year
