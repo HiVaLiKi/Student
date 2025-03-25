@@ -42,11 +42,14 @@ public class Student
     public boolean advance()
     {
         year++;
-        boolean flag = status!=Status.PAUSE;//flag = pushNewCoursesForYear();
-        if(!flag)
-            pushNewCoursesForYear();
+        boolean flag = status==Status.STUDYING;//flag = pushNewCoursesForYear();
         if(flag)
-            return true;
+            if(pushNewCoursesForYear())
+                return true;
+        //if(!flag)
+        //    pushNewCoursesForYear();
+        //if(flag)
+        //    return true;
         year--;
         return false;
     }

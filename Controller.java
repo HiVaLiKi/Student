@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class Controller
@@ -31,15 +28,10 @@ public class Controller
     public void open(String input)
     {
         Command command;
-        //if(programs == null || students == null)
-        //{
-        //    programs = Programs.getInstance();
-        //    students = new ArrayList<>();
-        //}
         command = getcommand(input.split(" "));
         if(input.split(" ")[0].equalsIgnoreCase("Save"))
             input = input.replaceFirst(" as", "");
-        else if(input.startsWith("Save"))
+        else if(input.startsWith("Save")&&input.length()>4)
             input+="savefile.csv";
         else if(input.startsWith(("Open")))
             if(input.split(" ").length == 1)
@@ -67,10 +59,24 @@ public class Controller
 
     private void enroll(String[] k)
     {
+        if(k.length < 5)
+        {
+            System.out.println("Too few arguments\nenroll <fn> <program> <group> <name>");
+            return;
+        }
         String fn = k[1];
         String program = k[2];
-        Short group = Short.parseShort(k[3]);
+        short group;
+        try {
+            group = Short.parseShort(k[3]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input for group, should be a number");
+            return;
+        }
+        //Short group = Short.parseShort(k[3]);
         String name = k[4];
+        for(int i=5; i < k.length;i++)
+            name+=" "+k[i];
         Student student = new Student();
         boolean flagEnroll = student.enroll(name, fn, program, group);
         if(flagEnroll)
@@ -81,6 +87,11 @@ public class Controller
 
     private void advance(String[] k)
     {
+        if(k.length < 2)
+        {
+            System.out.println("Too few arguments\nadvance <fn>");
+            return;
+        }
         String fn = k[1];
         boolean flag = false;
         Student student = getStudentByFN(fn);
@@ -109,6 +120,11 @@ public class Controller
 
     private void graduate(String[] k)
     {
+        if(k.length < 2)
+        {
+            System.out.println("Too few arguments\ngraduate <fn>");
+            return;
+        }
         String fn = k[1];
         boolean flag = false;
         Student student = getStudentByFN(fn);
@@ -122,6 +138,11 @@ public class Controller
 
     private void interrupt(String[] k)
     {
+        if(k.length < 2)
+        {
+            System.out.println("Too few arguments\ninterrupt <fn>");
+            return;
+        }
         String fn = k[1];
         Student student = getStudentByFN(fn);
         if(student != null)
@@ -132,6 +153,11 @@ public class Controller
 
     private void resume(String[] k)
     {
+        if(k.length < 2)
+        {
+            System.out.println("Too few arguments\nresume <fn>");
+            return;
+        }
         String fn = k[1];
         Student student = getStudentByFN(fn);
         if(student != null)
@@ -150,6 +176,11 @@ public class Controller
 
     private void print(String[] k)
     {
+        if(k.length < 2)
+        {
+            System.out.println("Too few arguments\nprint <fn>");
+            return;
+        }
         String fn = k[1];
         Student student = getStudentByFN(fn);
         if(student != null)
@@ -160,14 +191,30 @@ public class Controller
 
     private void printall(String[] k)
     {
+        if(k.length < 3)
+        {
+            System.out.println("Too few arguments\nprintall <program> <year>");
+            return;
+        }
         String program = k[1];
-        Short year = Short.parseShort(k[2]);
+        short year;
+        try {
+            year = Short.parseShort(k[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input for year, should be a number");
+            return;
+        }
         for(Student i: students)
             if(i.getProgram().equals(program) && i.getYear() == year)
                 System.out.println(i.print());
     }
     private void enrolling(String[] k)
     {
+        if(k.length < 3)
+        {
+            System.out.println("Too few arguments\nenrolling <fn> <course>");
+            return;
+        }
         String fn = k[1];
         String newcourse = k[2];
         boolean flag = false;
@@ -184,10 +231,21 @@ public class Controller
 
     private void addgrade(String[] k)
     {
+        if(k.length < 4)
+        {
+            System.out.println("Too few arguments\naddgrade <fn> <course> <grade>");
+            return;
+        }
         boolean flag = false;
         String fn = k[1];
         String course = k[2];
-        Double grade = Double.parseDouble(k[3]);
+        Double grade;
+        try {
+            grade = Double.parseDouble(k[3]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input for grade, should be a number");
+            return;
+        }
         Student student = getStudentByFN(fn);
         if(student != null)
             flag = student.addGrade(course, grade);
@@ -201,8 +259,13 @@ public class Controller
 
     private void protocol(String[] k)
     {
+        if(k.length < 2)
+        {
+            System.out.println("Too few arguments\nprotocol <course>");
+            return;
+        }
         String course = k[1];
-        List <Student> filteredStudents = students;
+        List <Student> filteredStudents = new ArrayList<>(students);
         filteredStudents.removeIf(i -> !i.isInCourse(course));
         filteredStudents.sort( (a,b) -> a.getFn().compareTo(b.getFn()));
         for(Student i: filteredStudents)
@@ -211,6 +274,11 @@ public class Controller
 
     private void report(String[] k)
     {
+        if(k.length < 2)
+        {
+            System.out.println("Too few arguments\nreport <fn>");
+            return;
+        }
         String fn = k[1];
         Student student = students.stream().filter(i -> i.getFn().equals(fn)).findFirst().orElse(null);
         if(student == null)
@@ -236,6 +304,7 @@ public class Controller
                 for(String ii: courseList)
                     myWriter.write(ii + "\n");
             }
+            //Planned to write to temp file, then rename it. Couldn't figure out how to delete/overwrite the old file
         }
         catch (IOException e) {
             System.out.println("An error occurred.");
@@ -283,7 +352,7 @@ public class Controller
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace(); // Handle any IO exceptions
+            e.printStackTrace();
         }
     }
 

@@ -11,7 +11,20 @@ public class Course
     Course(String name, String type, int year)
     {
         this.name = name;
-        this.type = Type.valueOf(type);
+        try {
+            this.type = Type.valueOf(type.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            if(type.equalsIgnoreCase("REQUIRED"))
+                this.type = Type.REQUIRED;
+            else if(type.equalsIgnoreCase("OPTIONAL"))
+                this.type = Type.OPTIONAL;
+            else
+            {
+                this.type = Type.OPTIONAL;
+                throw new IllegalArgumentException("Invalid course type: " + type + "Defaulted to Optional");
+            }
+        }
+        //this.type = Type.valueOf(type);
         //this.type = type.equals("Required")?Type.REQUIRED:Type.OPTIONAL;
         this.year = year;
     }
