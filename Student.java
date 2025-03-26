@@ -112,7 +112,7 @@ public class Student
     }
     public boolean enrolling(String newCourse)
     {
-        if(status == Status.PAUSE)
+        if(status != Status.STUDYING)
         {
             System.out.println("Can't enroll when interrupted");
             return false;
@@ -138,7 +138,7 @@ public class Student
             }
         if(!flag)
         {
-            System.out.println("Course not existing");
+            System.out.println("Course unavailable");
             return false;
         }
         return true;
@@ -217,6 +217,14 @@ public class Student
     public void pushCourseGrade(Pair<String, Double> pair)
     {
         courseGrade.add(pair);
+    }
+
+    public double getGradeForCourse(String course)
+    {
+        Pair <String,Double> res = courseGrade.stream().filter(a -> a.getLeft().equals(course)).findFirst().orElse(null);
+        if(res == null)
+            return -1;
+        return res.getRight();
     }
 
     @Override
