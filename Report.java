@@ -2,7 +2,7 @@ import java.util.List;
 
 public class Report
 {
-    public static void report(String[] k, List<Student> students)
+    public static void report(String[] k, Students students)
     {
         if(k.length < 2)
         {
@@ -10,7 +10,7 @@ public class Report
             return;
         }
         String fn = k[1];
-        Student student = students.stream().filter(i -> i.getFn().equals(fn)).findFirst().orElse(null);
+        Student student = students.getStudentByFN(fn);
         if(student == null)
             System.out.println("Student not found");
         else

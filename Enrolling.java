@@ -1,8 +1,6 @@
-import java.util.List;
-
 public class Enrolling
 {
-    public static void enrolling(String[] k, List<Student> students)
+    public static void enrolling(String[] k, Students students)
     {
         if(k.length < 3)
         {
@@ -12,7 +10,7 @@ public class Enrolling
         String fn = k[1];
         String newcourse = k[2];
         boolean flag = false;
-        Student student = students.stream().filter(i -> i.getFn().equals(fn)).findFirst().orElse(null);//getStudentByFN(fn,students);
+        Student student = students.getStudentByFN(fn);
         if(student != null)
             flag = student.enrolling(newcourse);
         else

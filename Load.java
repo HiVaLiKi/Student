@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Load
 {
-    public static void load(String[] k, List<Student> students)
+    public static void load(String[] k, Students students)
     {
         String filename = k[1];
         try (BufferedReader reader = new BufferedReader(new FileReader(filename)))
@@ -27,8 +27,7 @@ public class Load
                     student.setStatus(words[8]);
                     for(int i = 9; i < words.length; i++)
                     {
-                        Pair<String, Double> pair = new Pair<>(words[i].split("=")[0],Double.parseDouble(words[i].split("=")[1]));
-                        student.pushCourseGrade(pair);
+                        student.pushCourseGrade(words[i].split("=")[0],Double.parseDouble(words[i].split("=")[1]));
                     }
                     students.add(student);
                 }

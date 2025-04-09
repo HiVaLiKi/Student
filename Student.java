@@ -1,5 +1,6 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Student
 {
@@ -16,13 +17,13 @@ public class Student
     private short group;
     private double averageGrade;
     private int numOfGrades;
-    private ArrayList< Pair<String, Double>> courseGrade;
+    private HashMap<String, Double> courseGrade;
     private Status status;
 
     Student()
     {
         numOfGrades = 0;
-        this.courseGrade = new ArrayList<>();
+        this.courseGrade = new HashMap<>();
     }
     public boolean enroll(String name, String fn, String program, short group)
     {
@@ -42,14 +43,10 @@ public class Student
     public boolean advance()
     {
         year++;
-        boolean flag = status==Status.STUDYING;//flag = pushNewCoursesForYear();
+        boolean flag = status==Status.STUDYING;
         if(flag)
             if(pushNewCoursesForYear())
                 return true;
-        //if(!flag)
-        //    pushNewCoursesForYear();
-        //if(flag)
-        //    return true;
         year--;
         return false;
     }
@@ -63,26 +60,116 @@ public class Student
         }
         List <Course> courses = programbas.getCourseByYear(year);
         for(Course course: courses) {
-            courseGrade.add(new Pair<>(course.getName(), 2.0));
+            if(courseGrade.containsKey(course.getName()))
+            {
+                System.out.println("Course "+course.getName() + " already enrolled");
+                continue;
+            }
+            courseGrade.put(course.getName(), 2.0);
+            averageGrade=(averageGrade*numOfGrades+2)/(numOfGrades + 1);
             numOfGrades++;
         }
         return true;
     }
-    public boolean changeProgram(String program)
+    public boolean changeProgram(String value)
     {
-        boolean checkPastCourses = false;
-        Programs programs = Programs.getInstance();
-        Program programbas = programs.getProgramByName(program);
-        return false;
+        boolean flag = true;
+        for(short i=1;i<year;i++)
+        {
+            Program failsafe = Programs.getInstance().getProgramByName(value);
+            if(failsafe == null)
+            {
+                System.out.println("No such program");
+                return false;
+            }
+            List<Course> list = failsafe.getCourseByYear(i);
+            for(Course ii: list)
+            {
+                if(courseGrade.get(ii.getName()) == null || courseGrade.get(ii.getName()) < 3.00)
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            if(!flag)
+                break;
+        }
+        if(!flag)
+        {
+            System.out.println("Students hasn't completed all past courses for new Program");
+            return false;
+        }
+        this.program = value;
+        return true;
+    }
+
+    public boolean changeGroup(String value)
+    {
+        try {
+            this.group = Short.parseShort(value);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input for group, should be a number");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean changeYear(String value)
+    {
+        short year;
+        boolean flag = true;
+        try {
+            year = Short.parseShort(value);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input for year, should be a number");
+            return false;
+        }
+        if(this.year+1!=year)
+        {
+            System.out.println("Trying to change year that's not the next one");
+            return false;
+        }
+        short tolerance = 2;
+        for(short i=1;i<year;i++)
+        {
+            Program failsafe = Programs.getInstance().getProgramByName(program);
+            if(failsafe == null)
+            {
+                System.out.println("No such program");
+                return false;
+            }
+            List<Course> list = failsafe.getCourseByYear(i);
+            for(Course ii: list)
+                if(courseGrade.get(ii.getName()) == null)
+                {
+                    flag = false;
+                    break;
+                }
+                else if(courseGrade.get(ii.getName()) < 3.00)
+                {
+                    tolerance--;
+                    if(tolerance==0)
+                        break;
+                }
+            if(!flag || tolerance==0)
+                break;
+        }
+        if(tolerance==0||!flag)
+        {
+            System.out.println("Student need to take more exams");
+            return false;
+        }
+        flag = advance();
+        return flag;
     }
 
     public boolean graduate()
     {
         boolean flag = true;
-        for(Pair<String, Double> i: courseGrade)
-            if(i.getRight() < 3.0)
+        for(double i: courseGrade.values())
+            if(i<3.0)
             {
-                flag = false;
+                flag=false;
                 break;
             }
         if(flag)
@@ -103,9 +190,9 @@ public class Student
                 ", Average grade: " + averageGrade +
                 ", Status : " + status + "\n";
         res+="Pair <Course, Grade> {\n";
-        for(Pair<String, Double> pair: courseGrade)
+        for (Map.Entry<String, Double> entry : courseGrade.entrySet())
         {
-            res += "\t <" + pair.getLeft() + " , " + pair.getRight() + ">,\n";
+            res+="\t <" + entry.getKey() + " , " + entry.getValue() + ">,\n";
         }
         res += "}\n}";
         return res;
@@ -118,20 +205,18 @@ public class Student
             return false;
         }
         boolean flag = false;
-        for(Pair<String, Double> i: courseGrade)
-            if(i.getLeft().equals(newCourse))
-            {
-                System.out.println("Course already loaded");
-                return false;
-            }
-        //Programs programs = Programs.getInstance();
+        if(courseGrade.containsKey(newCourse))
+        {
+            System.out.println("Course already loaded");
+            return false;
+        }
         Program program = Programs.getInstance().getProgramByName(this.program);
         List<Course> list = program.getCourseByYear(year);
         for(Course i: list)
             if(i.getName().equals(newCourse))
             {
                 flag = true;
-                courseGrade.add(new Pair<>(i.getName(), 2.00));
+                courseGrade.put(i.getName(), 2.00);
                 averageGrade = (averageGrade*numOfGrades + 2.00)/(numOfGrades +1);
                 numOfGrades++;
                 break;
@@ -147,13 +232,11 @@ public class Student
     public boolean addGrade(String course, Double grade)
     {
         boolean flag = false;
-        for(Pair<String, Double> i: courseGrade)
-            if(i.getLeft().equals(course))
+        if(courseGrade.containsKey(course))
             {
-                averageGrade = (averageGrade*numOfGrades+grade-i.getRight()) / numOfGrades;
-                i.setRight(grade);
+                averageGrade = (averageGrade*numOfGrades+grade-courseGrade.get(course)) / numOfGrades;
+                courseGrade.put(course,grade);
                 flag = true;
-                break;
             }
         if(!flag)
             System.out.println("Course not enrolled for student");
@@ -162,7 +245,8 @@ public class Student
 
     public void interrupt()
     {
-        status = Status.PAUSE;
+        if(status != Status.GRADUATED)
+            status = Status.PAUSE;
     }
     public void resume()
     {
@@ -178,9 +262,7 @@ public class Student
     }
     public boolean isInCourse(String course)
     {
-        ArrayList< Pair<String, Double>> res = courseGrade;
-        return res.stream().anyMatch(i -> i.getLeft().equals(course));
-        //return res.removeIf(i -> !i.getLeft().getName().equals(course));
+        return courseGrade.containsKey(course);
     }
     public void setName(String name)
     {
@@ -214,17 +296,16 @@ public class Student
     public void setStatus(String status) {
         this.status = Status.valueOf(status);
     }
-    public void pushCourseGrade(Pair<String, Double> pair)
+    public void pushCourseGrade(String course, double grade)
     {
-        courseGrade.add(pair);
+        courseGrade.put(course, grade);
     }
 
     public double getGradeForCourse(String course)
     {
-        Pair <String,Double> res = courseGrade.stream().filter(a -> a.getLeft().equals(course)).findFirst().orElse(null);
-        if(res == null)
-            return -1;
-        return res.getRight();
+        if(courseGrade.containsKey(course))
+            return courseGrade.get(course);
+        return -1;
     }
 
     @Override
@@ -232,8 +313,8 @@ public class Student
     {
         String res ="";
         res += "Student,"+name+","+fn+","+year+","+program+","+group+","+averageGrade+","+numOfGrades+","+status+",";
-        for(Pair<String, Double> i: courseGrade)
-            res+=i.getLeft()+"="+i.getRight()+",";
+        for (Map.Entry<String, Double> i : courseGrade.entrySet())
+            res+=i.getKey()+"="+i.getValue()+",";
         return res;
     }
 }

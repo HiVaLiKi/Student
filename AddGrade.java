@@ -2,7 +2,7 @@ import java.util.List;
 
 public class AddGrade
 {
-    public static void addGrade(String[] k, List<Student> students)
+    public static void addGrade(String[] k, Students students)
     {
         if(k.length < 4)
         {
@@ -19,7 +19,7 @@ public class AddGrade
             System.out.println("Invalid input for grade, should be a number");
             return;
         }
-        Student student = students.stream().filter(i -> i.getFn().equals(fn)).findFirst().orElse(null);//getStudentByFN(fn,students);
+        Student student = students.getStudentByFN(fn);
         if(student != null)
             flag = student.addGrade(course, grade);
         else

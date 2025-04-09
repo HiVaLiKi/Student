@@ -1,22 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Programs {
     private static Programs instance;
-    private List<Program> programs;
+    private HashMap<String, Program> programs;
 
     private Programs() {
-        programs = new ArrayList<>();
-
-        //Program pr1 = new Program();
-        //pr1.setName("SIT");
-        //Course c1 = new Course("Mat", "REQUIRED", 1);
-        //Course c2 = new Course("UP", "REQUIRED", 2);
-        //List<Course> cs = new ArrayList<>();
-        //cs.add(c1);
-        //cs.add(c2);
-        //pr1.setCourses(cs);
-        //programs.add(pr1);
+        programs = new HashMap<>();
     }
 
     public static Programs getInstance() {
@@ -26,33 +15,23 @@ public class Programs {
         return instance;
     }
 
-    //public void addProgram(Program program) {
-    //    programs.add(program);
-    //}
-
     public Program getProgramByName(String name)
     {
-        for(Program i: programs)
-        {
-            if(i.getName().equals(name))
-                return i;
-        }
+        if(programs.containsKey(name))
+            return programs.get(name);
         return null;
     }
 
     public List<Program> getPrograms() {
-        return programs;
+        return new ArrayList<>(programs.values());
     }
     public void pushProgram(Program program)
     {
-        programs.add(program);
+        programs.put(program.getName(), program);
     }
     public void pushCourseToProgram(Course course, String program)
     {
-        for(Program i: programs)
-            if(i.getName().equalsIgnoreCase(program))
-            {
-                i.pushCourse(course);
-            }
+        if(programs.containsKey(program))
+            programs.get(program).pushCourse(course);
     }
 }

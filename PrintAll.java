@@ -1,8 +1,9 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrintAll
 {
-    public static void printAll(String[] k, List<Student> students)
+    public static void printAll(String[] k, Students students)
     {
         if(k.length < 3)
         {
@@ -17,7 +18,8 @@ public class PrintAll
             System.out.println("Invalid input for year, should be a number");
             return;
         }
-        for(Student i: students)
+        List<Student> temp = new ArrayList<>(students.getSet());
+        for(Student i: temp)
             if(i.getProgram().equals(program) && i.getYear() == year)
                 System.out.println(i.print());
     }

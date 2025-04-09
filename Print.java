@@ -1,8 +1,6 @@
-import java.util.List;
-
 public class Print
 {
-    public static void print(String[] k, List<Student> students)
+    public static void print(String[] k, Students students)
     {
         if(k.length < 2)
         {
@@ -10,7 +8,7 @@ public class Print
             return;
         }
         String fn = k[1];
-        Student student = students.stream().filter(i -> i.getFn().equals(fn)).findFirst().orElse(null);//getStudentByFN(fn,students);
+        Student student = students.getStudentByFN(fn);
         if(student != null)
             System.out.println(student.print());
         else

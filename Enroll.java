@@ -2,7 +2,7 @@ import java.util.List;
 
 public class Enroll
 {
-    public static void enroll(String[] k, List<Student> students)
+    public static void enroll(String[] k, Students students)
     {
             if(k.length < 5)
             {
@@ -18,7 +18,6 @@ public class Enroll
                 System.out.println("Invalid input for group, should be a number");
                 return;
             }
-            //Short group = Short.parseShort(k[3]);
             String name = k[4];
             for(int i=5; i < k.length;i++)
                 name+=" "+k[i];

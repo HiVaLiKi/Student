@@ -4,14 +4,13 @@ import java.util.List;
 
 public class Save
 {
-    public static void save(String[] k, List<Student> students)
+    public static void save(String[] k, Students students)
     {
         String filename = k[1];
         try(FileWriter myWriter = new FileWriter(filename))
         {
             List<Program> programs = Programs.getInstance().getPrograms();
-            //FileWriter myWriter = new FileWriter("savefile.csv");
-            for(Student i: students)
+            for(Student i: students.getSet())
                 myWriter.write(i.toString() +"\n");
             for(Program i: programs)
                 myWriter.write("Program,"+i.getName()+"\n");

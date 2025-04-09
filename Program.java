@@ -4,7 +4,7 @@ import java.util.List;
 public class Program
 {
     private String name;
-    List<Course> courses;
+    private List<Course> courses;
     Program()
     {
         name="";
@@ -35,13 +35,12 @@ public class Program
     {
         courses.add(course);
     }
+
     public List<String> getListToString()
     {
         List<String> res = new ArrayList<>();
         for(Course i: courses)
-        {
             res.add("Course,"+name+","+i.toString());
-        }
         return res;
     }
 }

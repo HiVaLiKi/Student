@@ -1,10 +1,10 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Protocol
 {
-    public static void protocol(String[] k, List<Student> students)
+    public static void protocol(String[] k, Students students)
     {
         if(k.length < 2)
         {
@@ -12,33 +12,26 @@ public class Protocol
             return;
         }
         String course = k[1];
-        List<Student> filteredStudents = new ArrayList<>(students);
+        List<Student> filteredStudents = new ArrayList<>(students.getSet());
         filteredStudents.removeIf(i -> !i.isInCourse(course));
-        filteredStudents.sort( (a,b) -> a.getFn().compareTo(b.getFn()));
-        List<String> programs = new ArrayList<>();
-        short maxYear = 0;
+        filteredStudents.sort(Comparator.comparing(Student::getProgram).thenComparing(Student::getYear).thenComparing(Student::getFn));
+
+        String program = "";
+        short year = 0;
         for(Student i: filteredStudents)
         {
-            programs.add(i.getProgram());
-            if(maxYear < i.getYear())
-                maxYear = i.getYear();
-        }
-        programs = programs.stream().distinct().collect(Collectors.toList());
-        for(String i: programs)
-        {
-            System.out.println(i + ":");
-            for(short year=1;year<=maxYear; year++)
+            if(!i.getProgram().equals(program))
             {
-                System.out.println("    Year: "+year);
-                for(Student student: filteredStudents)
-                {
-                    if(student.getYear()==year && student.getProgram().equals(i))
-                        System.out.println("        FN: "+student.getFn()+" Grade: "+student.getGradeForCourse(course));
-                }
+                program = i.getProgram();
+                System.out.println("Program " + program+":");
+                year = 0;
             }
+            if(i.getYear()!=year)
+            {
+                year = i.getYear();
+                System.out.println("    Year "+year+":");
+            }
+            System.out.println("        FN: " + i.getFn() + " Grade: " + i.getGradeForCourse(course));
         }
-
-        //for(Student i: filteredStudents)
-        //    System.out.println("FN: "+i.getFn()+" Grade: "+i.getGradeForCourse(course));
     }
 }

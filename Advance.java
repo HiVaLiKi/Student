@@ -2,7 +2,7 @@ import java.util.List;
 
 public class Advance
 {
-    public static void advance(String[] k, List<Student> students)
+    public static void advance(String[] k, Students students)
     {
         if(k.length < 2)
         {
@@ -11,7 +11,7 @@ public class Advance
         }
         String fn = k[1];
         boolean flag = false;
-        Student student = students.stream().filter(i -> i.getFn().equals(fn)).findFirst().orElse(null);//getStudentByFN(fn,students);
+        Student student = students.getStudentByFN(fn);
         if(student != null)
             flag = student.advance();
         if(!flag)

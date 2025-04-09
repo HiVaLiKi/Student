@@ -24,8 +24,6 @@ public class Course
                 throw new IllegalArgumentException("Invalid course type: " + type + "Defaulted to Optional");
             }
         }
-        //this.type = Type.valueOf(type);
-        //this.type = type.equals("Required")?Type.REQUIRED:Type.OPTIONAL;
         this.year = year;
     }
     public boolean isRequired()

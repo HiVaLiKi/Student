@@ -4,10 +4,10 @@ import java.util.*;
 public class Controller
 {
     private final HashMap<String, Command> commands;
-    private static List<Student> students;
+    private Students students;
     public Controller()
     {
-        students = new ArrayList<>();
+        students = new Students();
         commands = new HashMap<>();
         //commands.put("exit", this::exit);
         commands.put("exit", Exit::exit);
@@ -73,19 +73,7 @@ public class Controller
 
     private void change(String[] k)
     {
-        Student student = null;
-        boolean flag = false;
-        for(Student i: students)
-        {
-            if(i.getFn().equals(k[1])) {
-                student = i;
-                break;
-            }
-        }
-        if(k[2].equals("program"))
-        {
-            student.changeProgram(k[3]);
-        }
+        Change.change(k,students);
     }
 
     private void graduate(String[] k)
