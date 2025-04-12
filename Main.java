@@ -9,7 +9,6 @@ public class Main
         system.open("enroll 11 SIT 1 Valerian");
         system.open("advance 11");
         system.open("addgrade 11 Mat 3.5");
-        //system.open("load k.csv");
         system.open("print 11");
 
         String input;

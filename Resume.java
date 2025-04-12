@@ -1,7 +1,5 @@
-import java.util.List;
-
-public class Resume {
-    public static void resume(String[] k, Students students) {
+public class Resume implements Command{
+    public void execute(String[] k, Students students) {
         if (k.length < 2) {
             System.out.println("Too few arguments\nresume <fn>");
             return;

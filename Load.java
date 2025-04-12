@@ -1,10 +1,10 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 
-public class Load {
-    public static void load(String[] k, Students students) {
+public class Load implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         String filename = k[1];
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;

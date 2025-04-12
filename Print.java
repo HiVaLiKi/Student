@@ -1,5 +1,6 @@
-public class Print {
-    public static void print(String[] k, Students students) {
+public class Print implements Command {
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 2) {
             System.out.println("Too few arguments\nprint <fn>");
             return;

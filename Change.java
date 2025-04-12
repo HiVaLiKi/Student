@@ -1,5 +1,6 @@
-public class Change {
-    public static void change(String[] k, Students students) {
+public class Change implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 4) {
             System.out.println("Too few arguments\nchange <fn> <option>(program | group | year) <value>");
             return;

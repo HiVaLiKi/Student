@@ -1,7 +1,6 @@
-import java.util.List;
-
-public class Enroll {
-    public static void enroll(String[] k, Students students) {
+public class Enroll implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 5) {
             System.out.println("Too few arguments\nenroll <fn> <program> <group> <name>");
             return;

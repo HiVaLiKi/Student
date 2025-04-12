@@ -2,8 +2,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class Save {
-    public static void save(String[] k, Students students) {
+public class Save implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         String filename = k[1];
         try (FileWriter myWriter = new FileWriter(filename)) {
             List<Program> programs = Programs.getInstance().getPrograms();

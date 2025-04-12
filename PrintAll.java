@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrintAll {
-    public static void printAll(String[] k, Students students) {
+public class PrintAll implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 3) {
             System.out.println("Too few arguments\nprintall <program> <year>");
             return;

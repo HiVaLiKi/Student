@@ -1,7 +1,6 @@
-import java.util.List;
-
-public class Report {
-    public static void report(String[] k, Students students) {
+public class Report implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 2) {
             System.out.println("Too few arguments\nreport <fn>");
             return;

@@ -1,7 +1,6 @@
-import java.util.List;
-
-public class Graduate {
-    public static void graduate(String[] k, Students students) {
+public class Graduate implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 2) {
             System.out.println("Too few arguments\ngraduate <fn>");
             return;

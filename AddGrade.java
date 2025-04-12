@@ -1,7 +1,6 @@
-import java.util.List;
-
-public class AddGrade {
-    public static void addGrade(String[] k, Students students) {
+public class AddGrade implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 4) {
             System.out.println("Too few arguments\naddgrade <fn> <course> <grade>");
             return;

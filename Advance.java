@@ -1,7 +1,6 @@
-import java.util.List;
-
-public class Advance {
-    public static void advance(String[] k, Students students) {
+public class Advance implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 2) {
             System.out.println("Too few arguments\nadvance <fn>");
             return;

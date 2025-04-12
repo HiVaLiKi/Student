@@ -1,5 +1,6 @@
-public class Enrolling {
-    public static void enrolling(String[] k, Students students) {
+public class Enrolling implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 3) {
             System.out.println("Too few arguments\nenrolling <fn> <course>");
             return;

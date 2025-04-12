@@ -2,8 +2,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Protocol {
-    public static void protocol(String[] k, Students students) {
+public class Protocol implements Command{
+    @Override
+    public void execute(String[] k, Students students) {
         if (k.length < 2) {
             System.out.println("Too few arguments\nprotocol <course>");
             return;
@@ -15,17 +16,20 @@ public class Protocol {
 
         String program = "";
         short year = 0;
+        String res = "";
         for (Student i : filteredStudents) {
             if (!i.getProgram().equals(program)) {
                 program = i.getProgram();
-                System.out.println("Program " + program + ":");
+                res+="Program " + program + ":\n";
                 year = 0;
             }
             if (i.getYear() != year) {
                 year = i.getYear();
-                System.out.println("    Year " + year + ":");
+                res+="    Year " + year + ":\n";
             }
-            System.out.println("        FN: " + i.getFn() + " Grade: " + i.getGradeForCourse(course));
+            res+="        FN: " + i.getFn() + " Grade: " + i.getGradeForCourse(course)+"\n";
         }
+
+        System.out.println(res);
     }
 }
