@@ -1,12 +1,11 @@
 import java.io.*;
 import java.util.*;
 
-public class Controller
-{
+public class Controller {
     private final HashMap<String, Command> commands;
-    private Students students;
-    public Controller()
-    {
+    private final Students students;
+
+    public Controller() {
         students = new Students();
         commands = new HashMap<>();
         //commands.put("exit", this::exit);
@@ -27,112 +26,93 @@ public class Controller
         commands.put("open", this::load);
         commands.put("help", this::help);
     }
-    public void open(String input)
-    {
+
+    public void open(String input) {
         Command command;
         command = getcommand(input.split(" "));
-        if(input.split(" ")[0].equalsIgnoreCase("Save"))
-        {
+        if (input.split(" ")[0].equalsIgnoreCase("Save")) {
             input = input.replaceFirst(" as ", " ");
-            if(input.equalsIgnoreCase("save"))
-                input+=" savefile.csv";
-        }
-        else if(input.toLowerCase().startsWith(("open")))
-            if(input.length() == 4)
-                input+=" savefile.csv";
-        if(command==null)
-        {
+            if (input.equalsIgnoreCase("save"))
+                input += " savefile.csv";
+        } else if (input.toLowerCase().startsWith(("open")))
+            if (input.length() == 4)
+                input += " savefile.csv";
+        if (command == null) {
             System.out.println("Command not found");
             return;
         }
 
         command.execute(input.split(" "));
     }
-    private Command getcommand(String[] input)
-    {
-        if(commands.containsKey(input[0].toLowerCase()))
+
+    private Command getcommand(String[] input) {
+        if (commands.containsKey(input[0].toLowerCase()))
             return commands.get(input[0]);
         return null;
     }
 
-    private void exit(String[] k)
-    {
+    private void exit(String[] k) {
         System.out.println("Closing...Goodbye");
         System.exit(0);
     }
 
-    private void enroll(String[] k)
-    {
+    private void enroll(String[] k) {
         Enroll.enroll(k, students);
     }
 
-    private void advance(String[] k)
-    {
-        Advance.advance(k,students);
+    private void advance(String[] k) {
+        Advance.advance(k, students);
     }
 
-    private void change(String[] k)
-    {
-        Change.change(k,students);
+    private void change(String[] k) {
+        Change.change(k, students);
     }
 
-    private void graduate(String[] k)
-    {
-        Graduate.graduate(k,students);
+    private void graduate(String[] k) {
+        Graduate.graduate(k, students);
     }
 
-    private void interrupt(String[] k)
-    {
-        Interrupt.interrupt(k,students);
+    private void interrupt(String[] k) {
+        Interrupt.interrupt(k, students);
     }
 
-    private void resume(String[] k)
-    {
-        Resume.resume(k,students);
+    private void resume(String[] k) {
+        Resume.resume(k, students);
     }
 
-    private void print(String[] k)
-    {
-        Print.print(k,students);
+    private void print(String[] k) {
+        Print.print(k, students);
     }
 
-    private void printall(String[] k)
-    {
-        PrintAll.printAll(k,students);
+    private void printall(String[] k) {
+        PrintAll.printAll(k, students);
     }
 
-    private void enrolling(String[] k)
-    {
-        Enrolling.enrolling(k,students);
+    private void enrolling(String[] k) {
+        Enrolling.enrolling(k, students);
     }
 
-    private void addgrade(String[] k)
-    {
-        AddGrade.addGrade(k,students);
+    private void addgrade(String[] k) {
+        AddGrade.addGrade(k, students);
     }
 
-    private void protocol(String[] k)
-    {
-        Protocol.protocol(k,students);
+    private void protocol(String[] k) {
+        Protocol.protocol(k, students);
     }
 
-    private void report(String[] k)
-    {
-        Report.report(k,students);
+    private void report(String[] k) {
+        Report.report(k, students);
     }
 
-    private void save(String[] k)
-    {
-        Save.save(k,students);
+    private void save(String[] k) {
+        Save.save(k, students);
     }
 
-    private void load(String[] k)
-    {
-        Load.load(k,students);
+    private void load(String[] k) {
+        Load.load(k, students);
     }
 
-    private void help(String[] k)
-    {
+    private void help(String[] k) {
         System.out.println("addgrade <fn> <course> <grade>\n" +
                 "advance <fn>\n" +
                 "enroll <fn> <program> <group> <name>\n" +

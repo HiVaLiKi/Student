@@ -1,30 +1,29 @@
 import java.util.*;
 
-public class Students
-{
-    private TreeSet<Student> students;//Don't ask why not Hashmap, even tho it's bellow
-    Students()
-    {
+public class Students {
+    private final TreeSet<Student> students;//Don't ask why not Hashmap, even tho it's bellow
+
+    Students() {
         students = new TreeSet<>(Comparator.comparing(Student::getFn));
     }
-    public Student getStudentByFN(String fn)
-    {
+
+    public Student getStudentByFN(String fn) {
         Student dummyStudent = new Student();
         dummyStudent.setFn(fn);
         Student res = students.ceiling(dummyStudent);
-        if(res != null)
-            if(res.getFn().equals(fn))
+        if (res != null)
+            if (res.getFn().equals(fn))
                 return res;
         return null;
     }
-    public void add(Student student)
-    {
-        if(student!=null)
-            if(!students.add(student))
-                System.out.println("Student with FN "+student.getFn()+" already exists");
+
+    public void add(Student student) {
+        if (student != null)
+            if (!students.add(student))
+                System.out.println("Student with FN " + student.getFn() + " already exists");
     }
-    public ArrayList<Student> getSet()
-    {
+
+    public ArrayList<Student> getSet() {
         return new ArrayList<Student>(students);
     }
 }

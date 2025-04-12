@@ -1,11 +1,8 @@
 import java.util.List;
 
-public class AddGrade
-{
-    public static void addGrade(String[] k, Students students)
-    {
-        if(k.length < 4)
-        {
+public class AddGrade {
+    public static void addGrade(String[] k, Students students) {
+        if (k.length < 4) {
             System.out.println("Too few arguments\naddgrade <fn> <course> <grade>");
             return;
         }
@@ -20,11 +17,11 @@ public class AddGrade
             return;
         }
         Student student = students.getStudentByFN(fn);
-        if(student != null)
+        if (student != null)
             flag = student.addGrade(course, grade);
         else
             System.out.println("Student not found");
-        if(!flag)
+        if (!flag)
             System.out.println("Error in grading course for student");
         else
             System.out.println("Course graded successfully");

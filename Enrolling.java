@@ -1,9 +1,6 @@
-public class Enrolling
-{
-    public static void enrolling(String[] k, Students students)
-    {
-        if(k.length < 3)
-        {
+public class Enrolling {
+    public static void enrolling(String[] k, Students students) {
+        if (k.length < 3) {
             System.out.println("Too few arguments\nenrolling <fn> <course>");
             return;
         }
@@ -11,11 +8,11 @@ public class Enrolling
         String newcourse = k[2];
         boolean flag = false;
         Student student = students.getStudentByFN(fn);
-        if(student != null)
+        if (student != null)
             flag = student.enrolling(newcourse);
         else
             System.out.println("No such student found by FN");
-        if(!flag)
+        if (!flag)
             System.out.println("Error in enrolling");
         else
             System.out.println("Student enrolled");

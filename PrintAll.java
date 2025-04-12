@@ -1,12 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrintAll
-{
-    public static void printAll(String[] k, Students students)
-    {
-        if(k.length < 3)
-        {
+public class PrintAll {
+    public static void printAll(String[] k, Students students) {
+        if (k.length < 3) {
             System.out.println("Too few arguments\nprintall <program> <year>");
             return;
         }
@@ -19,8 +16,8 @@ public class PrintAll
             return;
         }
         List<Student> temp = new ArrayList<>(students.getSet());
-        for(Student i: temp)
-            if(i.getProgram().equals(program) && i.getYear() == year)
+        for (Student i : temp)
+            if (i.getProgram().equals(program) && i.getYear() == year)
                 System.out.println(i.print());
     }
 }
