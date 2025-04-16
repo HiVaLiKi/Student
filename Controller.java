@@ -1,9 +1,16 @@
 import java.util.*;
 
-public class Controller {
+/**
+ * This class is the control manager of the System. It handles the input and executes the according commands
+ * Used by calling the Controller.open() method
+ */
+public class Controller implements CLI{
     private final HashMap<String, Command> commands;
     private final Students students;
 
+    /**
+     * Constructor loading the commands in the Hashmap
+     */
     public Controller() {
         students = new Students();
         commands = new HashMap<>();
@@ -25,11 +32,16 @@ public class Controller {
         commands.put("help", new Help());
     }
 
+    /**
+     * input stream for the System. Handles reading and executing of command. If needed ads default filenames when Saving/Loading
+     * @param input String input corresponding to CLI command
+     */
+    @Override
     public void open(String input)
     {
         if (input.split(" ")[0].equalsIgnoreCase("Save")) {
             input = input.replaceFirst(" as ", " ");
-            if (input.equalsIgnoreCase("save"))
+            if (input.length() == 4)
                 input += " savefile.csv";
         } else if (input.toLowerCase().startsWith(("open")) && input.length() == 4)
                 input += " savefile.csv";
@@ -38,9 +50,21 @@ public class Controller {
         String[] k = input.split(" ");
         command = getcommand(k);
         if(command != null)
-            command.execute(k, students);
+        {
+            try{
+                String res = command.execute(k, students);
+                System.out.println(res);//May be returned for outside handling
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
     }
 
+    /**
+     * checks if input corresponds to any command
+     * @param input command split for easier lookup
+     * @return reference to the object executing the command
+     */
     private Command getcommand(String[] input) {
         if (commands.containsKey(input[0].toLowerCase()))
             return commands.get(input[0]);

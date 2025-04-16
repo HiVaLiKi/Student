@@ -1,12 +1,23 @@
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Methods for processing StudentInfo
+ */
 public class Student extends StudentInfo {
-    Student() {
+    protected Student() {
         super();
     }
 
-    public boolean enroll(String name, String fn, String program, short group) {
+    /**
+     * sets the data for a new student and adds the corresponding courses
+     * @param name self-explanatory
+     * @param fn self-explanatory
+     * @param program self-explanatory
+     * @param group self-explanatory
+     * @throws Exception general
+     */
+    protected void enroll(String name, String fn, String program, short group) throws Exception{
         this.name = name;
         this.fn = fn;
         year = 1;
@@ -14,131 +25,110 @@ public class Student extends StudentInfo {
         this.group = group;
         status = Status.STUDYING;
         averageGrade = 2.0;
-        return pushNewCoursesForYear();
+        pushNewCoursesForYear();
     }
 
-    public boolean advance() {
+    /**
+     *
+     * @throws Exception general
+     */
+    protected void advance() throws Exception{
         year++;
-        boolean flag = status == Status.STUDYING;
-        if (flag)
-            if (pushNewCoursesForYear())
-                return true;
-        year--;
-        return false;
+        if (status == Status.STUDYING) {
+            try {
+                pushNewCoursesForYear();
+            } catch (Exception e) {
+                year --;
+                throw new Exception(e);
+            }
+        }
     }
 
-    private boolean pushNewCoursesForYear() {
+    /**
+     * Takes courses for the program of student by calling @see Program.getCourseByYear() and adds them to the student's data
+     * @throws Exception
+     */
+    private void pushNewCoursesForYear() throws Exception {
         Program programbas = Programs.getInstance().getProgramByName(program);
         if (programbas == null) {
-            System.out.println("No such program found");
-            return false;
+            throw new Exception("No such program found");
         }
         List<Course> courses = programbas.getCourseByYear(year);
         for (Course course : courses) {
-            if (courseGrade.containsKey(course.getName())) {
-                System.out.println("Course " + course.getName() + " already enrolled");
+            if (courseGrade.containsKey(course.getName()))
                 continue;
-            }
             courseGrade.put(course.getName(), 2.0);
             averageGrade = (averageGrade * numOfGrades + 2) / (numOfGrades + 1);
             numOfGrades++;
         }
-        return true;
     }
 
-    public boolean changeProgram(String value) {
-        boolean flag = true;
+    protected void changeProgram(String value) throws Exception{
         for (short i = 1; i < year; i++) {
             Program failsafe = Programs.getInstance().getProgramByName(value);
             if (failsafe == null) {
-                System.out.println("No such program");
-                return false;
+                throw new Exception("No such program");
             }
             List<Course> list = failsafe.getCourseByYear(i);
             for (Course ii : list) {
                 if (courseGrade.get(ii.getName()) == null || courseGrade.get(ii.getName()) < 3.00) {
-                    flag = false;
-                    break;
+                    throw new Exception("Students hasn't completed all past courses for new Program");
                 }
             }
-            if (!flag)
-                break;
-        }
-        if (!flag) {
-            System.out.println("Students hasn't completed all past courses for new Program");
-            return false;
         }
         this.program = value;
-        return true;
     }
 
-    public boolean changeGroup(String value) {
+    protected void changeGroup(String value) throws Exception{
         try {
             this.group = Short.parseShort(value);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input for group, should be a number");
-            return false;
+            throw new Exception("Invalid input for group, should be a number");
         }
-        return true;
     }
 
-    public boolean changeYear(String value) {
+    protected void changeYear(String value) throws Exception{
         short year;
-        boolean flag = true;
         try {
             year = Short.parseShort(value);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input for year, should be a number");
-            return false;
+            throw new Exception("Invalid input for year, should be a number");
         }
         if (this.year + 1 != year) {
-            System.out.println("Trying to change year that's not the next one");
-            return false;
+            throw new Exception("Trying to change year that's not the next one");
         }
         short tolerance = 2;
         for (short i = 1; i < year; i++) {
             Program failsafe = Programs.getInstance().getProgramByName(program);
             if (failsafe == null) {
-                System.out.println("No such program");
-                return false;
+                throw new Exception("No such program");
             }
             List<Course> list = failsafe.getCourseByYear(i);
             for (Course ii : list)
                 if (courseGrade.get(ii.getName()) == null) {
-                    flag = false;
-                    break;
+                    throw new Exception("Student need to take more exams");
                 } else if (courseGrade.get(ii.getName()) < 3.00) {
                     tolerance--;
                     if (tolerance == 0)
-                        break;
+                        throw new Exception("Student need to take more exams");
                 }
-            if (!flag || tolerance == 0)
-                break;
         }
-        if (tolerance == 0 || !flag) {
-            System.out.println("Student need to take more exams");
-            return false;
-        }
-        flag = advance();
-        return flag;
+        advance();
     }
 
-    public boolean graduate() {
-        boolean flag = true;
+    protected void graduate() throws Exception{
         for (double i : courseGrade.values())
             if (i < 3.0) {
-                flag = false;
-                break;
+                throw new Exception("Student didn't finish all exams successfully");
             }
-        if (flag) {
-            status = Status.GRADUATED;
-            return true;
-        }
-        System.out.println("Student didn't finish all exams successfully");
-        return false;
+        status = Status.GRADUATED;
     }
 
-    public String print() {
+    /**
+     *
+     * @return beautified data of student
+     */
+    protected String print() {
         String res = "Student " + fn + " { \n";
         res += "Name: " + name +
                 ", Year: " + year +
@@ -154,55 +144,46 @@ public class Student extends StudentInfo {
         return res;
     }
 
-    public boolean enrolling(String newCourse) {
-        if (status != Status.STUDYING) {
-            System.out.println("Can't enroll when interrupted");
-            return false;
-        }
-        boolean flag = false;
-        if (courseGrade.containsKey(newCourse)) {
-            System.out.println("Course already loaded");
-            return false;
-        }
+    protected void enrolling(String newCourse) throws Exception{
+        if (status != Status.STUDYING)
+            throw new Exception("Can't enroll when interrupted");
+        if (courseGrade.containsKey(newCourse))
+            throw new Exception("Course already loaded");
         Program program = Programs.getInstance().getProgramByName(this.program);
         List<Course> list = program.getCourseByYear(year);
         for (Course i : list)
             if (i.getName().equals(newCourse)) {
-                flag = true;
                 courseGrade.put(i.getName(), 2.00);
                 averageGrade = (averageGrade * numOfGrades + 2.00) / (numOfGrades + 1);
                 numOfGrades++;
-                break;
+                return;
             }
-        if (!flag) {
-            System.out.println("Course unavailable");
-            return false;
-        }
-        return true;
+        throw new Exception("Course unavailable");
     }
 
-    public boolean addGrade(String course, Double grade) {
-        boolean flag = false;
+    protected void addGrade(String course, Double grade) throws Exception{
         if (courseGrade.containsKey(course)) {
             averageGrade = (averageGrade * numOfGrades + grade - courseGrade.get(course)) / numOfGrades;
             courseGrade.put(course, grade);
-            flag = true;
         }
-        if (!flag)
-            System.out.println("Course not enrolled for student");
-        return flag;
+        else
+            throw new Exception("Course not enrolled for student");
     }
 
-    public void interrupt() {
+    protected void interrupt() {
         if (status != Status.GRADUATED)
             status = Status.PAUSE;
     }
 
-    public void resume() {
+    protected void resume() {
         if (status != Status.GRADUATED)
             status = Status.STUDYING;
     }
 
+    /**
+     *
+     * @return data of student in csv format
+     */
     @Override
     public String toString() {
         String res = "";

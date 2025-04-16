@@ -1,5 +1,10 @@
 import java.util.*;
 
+/**
+ * Programs manager
+ * Handes operations for adding, extracting info
+ * SIngleton pattern because why not
+ */
 public class Programs {
     private static Programs instance;
     private final HashMap<String, Program> programs;
@@ -8,28 +13,42 @@ public class Programs {
         programs = new HashMap<>();
     }
 
-    public static Programs getInstance() {
+    /**
+     *
+     * @return instance of the class so it's the same everywhere
+     */
+    protected static Programs getInstance() {
         if (instance == null) {
             instance = new Programs();
         }
         return instance;
     }
 
-    public Program getProgramByName(String name) {
+    /**
+     *
+     * @param name which program name are we looking for
+     * @return reference to the said program
+     */
+    protected Program getProgramByName(String name) {
         if (programs.containsKey(name))
             return programs.get(name);
         return null;
     }
 
-    public List<Program> getPrograms() {
+    protected List<Program> getPrograms() {
         return new ArrayList<>(programs.values());
     }
 
-    public void pushProgram(Program program) {
+    protected void pushProgram(Program program) {
         programs.put(program.getName(), program);
     }
 
-    public void pushCourseToProgram(Course course, String program) {
+    /**
+     *
+     * @param course course reference to add to a program
+     * @param program where to add course
+     */
+    protected void pushCourseToProgram(Course course, String program) {
         if (programs.containsKey(program))
             programs.get(program).pushCourse(course);
     }

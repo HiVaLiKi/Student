@@ -8,7 +8,13 @@ public class Course {
     private Type type;
     private final int year;
 
-    Course(String name, String type, int year) {
+    /**
+     *
+     * @param name name of Course
+     * @param type Either Required or optional
+     * @param year which year the course is from
+     */
+    protected Course(String name, String type, int year){
         this.name = name;
         try {
             this.type = Type.valueOf(type.toUpperCase());
@@ -19,25 +25,32 @@ public class Course {
                 this.type = Type.OPTIONAL;
             else {
                 this.type = Type.OPTIONAL;
-                throw new IllegalArgumentException("Invalid course type: " + type + "Defaulted to Optional");
+                System.out.println("Invalid course type: " + type + "Defaulted to Optional");
             }
         }
         this.year = year;
     }
 
-    public boolean isRequired() {
+    /**
+     *
+     * @return true, if course is required
+     */
+    protected boolean isRequired() {
         return type == Type.REQUIRED;
     }
 
-    public int getYear() {
+    protected int getYear() {
         return year;
     }
 
-    public String getName() {
+    protected String getName() {
         return name;
     }
 
     @Override
+    /**
+     * Override of Tostring in a csv format
+     */
     public String toString() {
         return name + "," + type + "," + year;
     }

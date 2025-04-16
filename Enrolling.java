@@ -1,21 +1,17 @@
 public class Enrolling implements Command{
     @Override
-    public void execute(String[] k, Students students) {
-        if (k.length < 3) {
-            System.out.println("Too few arguments\nenrolling <fn> <course>");
-            return;
-        }
+    /**
+     * Check for valid unput. Filters a student by fn and calls @see Student.enrolling()
+     */
+    public String execute(String[] k, Students students) throws Exception{
+        if (k.length < 3)
+            throw new Exception("Too few arguments\nenrolling <fn> <course>");
         String fn = k[1];
         String newcourse = k[2];
-        boolean flag = false;
         Student student = students.getStudentByFN(fn);
-        if (student != null)
-            flag = student.enrolling(newcourse);
-        else
-            System.out.println("No such student found by FN");
-        if (!flag)
-            System.out.println("Error in enrolling");
-        else
-            System.out.println("Student enrolled");
+        if (student == null)
+            throw new Exception("No such student found by FN");
+        student.enrolling(newcourse);
+        return "Student enrolled in course!";
     }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Save implements Command{
     @Override
-    public void execute(String[] k, Students students) {
+    public String execute(String[] k, Students students) throws Exception{
         String filename = k[1];
         try (FileWriter myWriter = new FileWriter(filename)) {
             List<Program> programs = Programs.getInstance().getPrograms();
@@ -18,9 +18,9 @@ public class Save implements Command{
                     myWriter.write(ii + "\n");
             }
             //Planned to write to temp file, then rename it. Couldn't figure out how to delete/overwrite the old file
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return "Data saved!";
     }
 }

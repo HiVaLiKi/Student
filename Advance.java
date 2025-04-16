@@ -1,16 +1,16 @@
 public class Advance implements Command{
     @Override
-    public void execute(String[] k, Students students) {
-        if (k.length < 2) {
-            System.out.println("Too few arguments\nadvance <fn>");
-            return;
-        }
+    /**
+     * checks for valid input. Finds student and calls @see Student.advance() for further handling
+     */
+    public String execute(String[] k, Students students) throws Exception{
+        if (k.length < 2)
+            throw new Exception("Too few arguments\nadvance <fn>");
         String fn = k[1];
-        boolean flag = false;
         Student student = students.getStudentByFN(fn);
-        if (student != null)
-            flag = student.advance();
-        if (!flag)
-            System.out.println("Error in advancing student");
+        if (student == null)
+            throw new Exception("Student not found");
+        student.advance();
+        return "Student advanced!";
     }
 }

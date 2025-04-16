@@ -1,28 +1,23 @@
 public class AddGrade implements Command{
     @Override
-    public void execute(String[] k, Students students) {
-        if (k.length < 4) {
-            System.out.println("Too few arguments\naddgrade <fn> <course> <grade>");
-            return;
-        }
-        boolean flag = false;
+    /**
+     * Processes AddGrade instructions. Checks if input fields are valid, finds certain Student by FN and calls @see Student.addGrade() for futher handling
+     */
+    public String execute(String[] k, Students students) throws Exception{
+        if (k.length < 4)
+            throw new Exception("Too few arguments\naddgrade <fn> <course> <grade>");
         String fn = k[1];
         String course = k[2];
         double grade;
         try {
             grade = Double.parseDouble(k[3]);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input for grade, should be a number");
-            return;
+            throw new Exception("Invalid input for grade, should be a number");
         }
         Student student = students.getStudentByFN(fn);
-        if (student != null)
-            flag = student.addGrade(course, grade);
-        else
-            System.out.println("Student not found");
-        if (!flag)
-            System.out.println("Error in grading course for student");
-        else
-            System.out.println("Course graded successfully");
+        if (student == null)
+            throw new Exception("Student not found");
+        student.addGrade(course, grade);
+        return "Graded added!";
     }
 }

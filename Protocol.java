@@ -3,12 +3,17 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Protocol implements Command{
+    /**
+     * Processes outputing for Student. Filters by Course and sorts by Program then by Year and finally by FN
+     * @param k Split version of original command @see Controller.open()
+     * @param students reference to the Class Handler for Students
+     * @return result for output. Sorted and filtered list of students in course from input
+     * @throws Exception
+     */
     @Override
-    public void execute(String[] k, Students students) {
-        if (k.length < 2) {
-            System.out.println("Too few arguments\nprotocol <course>");
-            return;
-        }
+    public String execute(String[] k, Students students) throws Exception{
+        if (k.length < 2)
+            throw new Exception("Too few arguments\nprotocol <course>");
         String course = k[1];
         List<Student> filteredStudents = new ArrayList<>(students.getSet());
         filteredStudents.removeIf(i -> !i.isInCourse(course));
@@ -30,6 +35,6 @@ public class Protocol implements Command{
             res+="        FN: " + i.getFn() + " Grade: " + i.getGradeForCourse(course)+"\n";
         }
 
-        System.out.println(res);
+        return res;
     }
 }

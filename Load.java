@@ -3,8 +3,14 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Load implements Command{
+    /**
+     *
+     * @param k Split version of original command @see Controller.open()
+     * @param students reference to the Class Handler for Students
+     * @return Succesfull!
+     */
     @Override
-    public void execute(String[] k, Students students) {
+    public String execute(String[] k, Students students) {
         String filename = k[1];
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
@@ -30,7 +36,11 @@ public class Load implements Command{
                     for (int i = 9; i < words.length; i++) {
                         student.pushCourseGrade(words[i].split("=")[0], Double.parseDouble(words[i].split("=")[1]));
                     }
-                    students.add(student);
+                    try{
+                        students.add(student);
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                 } else if (words[0].equalsIgnoreCase("Program")) {
                     Program program = new Program();
                     program.setName(words[1]);
@@ -40,8 +50,9 @@ public class Load implements Command{
                     Programs.getInstance().pushCourseToProgram(course, words[1]);
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return "Data Loaded!";
     }
 }

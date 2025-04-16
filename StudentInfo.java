@@ -1,5 +1,8 @@
 import java.util.HashMap;
 
+/**
+ * Basic info of student separated from method's class
+ */
 public class StudentInfo implements StudentPerson {
     protected enum Status {
         STUDYING,
@@ -17,7 +20,7 @@ public class StudentInfo implements StudentPerson {
     protected HashMap<String, Double> courseGrade;
     protected Status status;
 
-    StudentInfo() {
+    protected StudentInfo() {
         numOfGrades = 0;
         this.courseGrade = new HashMap<>();
     }
@@ -89,6 +92,7 @@ public class StudentInfo implements StudentPerson {
         return -1;
     }
 
+    @Override
     public boolean isInCourse(String course) {
         return courseGrade.containsKey(course);
     }

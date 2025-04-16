@@ -1,27 +1,23 @@
 public class Change implements Command{
     @Override
-    public void execute(String[] k, Students students) {
-        if (k.length < 4) {
-            System.out.println("Too few arguments\nchange <fn> <option>(program | group | year) <value>");
-            return;
-        }
+    /**
+     * Checks for valid input. Checks for type of change and calls corresponding method in Student
+     */
+    public String execute(String[] k, Students students) throws Exception{
+        if (k.length < 4)
+            throw new Exception("Too few arguments\nchange <fn> <option>(program | group | year) <value>");
         String fn = k[1];
         String option = k[2];
         String value = k[3];
         Student student = students.getStudentByFN(fn);
-        boolean flag = false;
         if (option.equalsIgnoreCase("program"))
-            flag = student.changeProgram(value);
+            student.changeProgram(value);
         else if (option.equalsIgnoreCase("group"))
-            flag = student.changeGroup(value);
+            student.changeGroup(value);
         else if (option.equalsIgnoreCase("year"))
-            flag = student.changeYear(value);
+            student.changeYear(value);
         else
-            System.out.println("Something wrong with command\nchange <fn> <option>(program | group | year) <value>");
-        if (!flag) {
-            System.out.println("Error in change");
-            return;
-        }
-        System.out.println("Success");
+            throw new Exception("Something wrong with command\nchange <fn> <option>(program | group | year) <value>");
+        return "Change sucessfull!";
     }
 }

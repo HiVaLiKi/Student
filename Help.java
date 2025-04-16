@@ -1,8 +1,14 @@
 public class Help implements Command{
+    /**
+     *
+     * @param k Split version of original command @see Controller.open()
+     * @param students reference to the Class Handler for Students
+     * @return helpfull list of commands
+     */
     @Override
-    public void execute(String[] k, Students students)
+    public String execute(String[] k, Students students)
     {
-        System.out.println("addgrade <fn> <course> <grade>\n" +
+        return "addgrade <fn> <course> <grade>\n" +
                 "advance <fn>\n" +
                 "enroll <fn> <program> <group> <name>\n" +
                 "enrolling <fn> <course>\n" +
@@ -15,6 +21,6 @@ public class Help implements Command{
                 "report <fn>\n" +
                 "resume <fn>\n" +
                 "save\n" +
-                "save as <filename>");
+                "save as <filename>";
     }
 }
