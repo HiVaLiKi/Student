@@ -9,12 +9,11 @@ public class Course {
     private final int year;
 
     /**
-     *
      * @param name name of Course
-     * @param type Either Required or optional
+     * @param type Either required or optional
      * @param year which year the course is from
      */
-    protected Course(String name, String type, int year){
+    protected Course(String name, String type, int year) {
         this.name = name;
         try {
             this.type = Type.valueOf(type.toUpperCase());
@@ -32,7 +31,6 @@ public class Course {
     }
 
     /**
-     *
      * @return true, if course is required
      */
     protected boolean isRequired() {
@@ -47,10 +45,12 @@ public class Course {
         return name;
     }
 
-    @Override
     /**
-     * Override of Tostring in a csv format
+     * Override of toString in a csv format
+     *
+     * @return data in a csv format
      */
+    @Override
     public String toString() {
         return name + "," + type + "," + year;
     }

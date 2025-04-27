@@ -35,6 +35,10 @@ public class Programs {
         return null;
     }
 
+    /**
+     *
+     * @return List of Programs
+     */
     protected List<Program> getPrograms() {
         return new ArrayList<>(programs.values());
     }

@@ -1,5 +1,8 @@
 public class Report implements Command{
     /**
+     * Returns data for a student
+     * 1st word - command
+     * 2nd word - fn of student
      * @see Print()
      * @param k Split version of original command @see Controller.open()
      * @param students reference to the Class Handler for Students

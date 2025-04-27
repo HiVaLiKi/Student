@@ -3,6 +3,15 @@ import java.io.IOException;
 import java.util.List;
 
 public class Save implements Command{
+    /**
+     * Saves All Data to a file in csv format
+     * 1st word - command
+     * 2nd word - filename
+     * @param k Split version of original command @see Controller.open()
+     * @param students reference to the Class Handler for Students
+     * @return Successful messsage
+     * @throws Exception General
+     */
     @Override
     public String execute(String[] k, Students students) throws Exception{
         String filename = k[1];

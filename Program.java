@@ -22,6 +22,7 @@ public class Program {
     }
 
     /**
+     * Gets a list of courses for a selected year
      *
      * @param year Which courses to filter
      * @return list of courses for the said year
@@ -39,7 +40,6 @@ public class Program {
     }
 
     /**
-     *
      * @return a list of strings each containing the data for a course @see Course.toString() in a csv format
      */
     protected List<String> getListToString() {

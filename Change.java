@@ -1,8 +1,16 @@
 public class Change implements Command{
-    @Override
     /**
      * Checks for valid input. Checks for type of change and calls corresponding method in Student
+     * 1st word - command
+     * 2nd word - fn of student
+     * 3rd word - what is supposed to be changed - program | group | year
+     * 4th - to what value to change
+     * @param k Split version of original command @see Controller.open()
+     * @param students reference to the Class Handler for Students
+     * @return Successfull message
+     * @throws Exception General
      */
+    @Override
     public String execute(String[] k, Students students) throws Exception{
         if (k.length < 4)
             throw new Exception("Too few arguments\nchange <fn> <option>(program | group | year) <value>");

@@ -1,9 +1,9 @@
 public class Help implements Command{
     /**
-     *
+     * List of commands possible
      * @param k Split version of original command @see Controller.open()
      * @param students reference to the Class Handler for Students
-     * @return helpfull list of commands
+     * @return helpful list of commands
      */
     @Override
     public String execute(String[] k, Students students)

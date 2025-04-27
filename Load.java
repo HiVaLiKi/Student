@@ -4,7 +4,9 @@ import java.io.IOException;
 
 public class Load implements Command{
     /**
-     *
+     * Reads data from passed filename in String.
+     * 1st word - command
+     * 2nd word - filename
      * @param k Split version of original command @see Controller.open()
      * @param students reference to the Class Handler for Students
      * @return Succesfull!

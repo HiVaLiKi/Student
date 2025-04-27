@@ -63,6 +63,11 @@ public class Student extends StudentInfo {
         }
     }
 
+    /**
+     * Changes student's program if certain criteria is met
+     * @param value Name of program to be enrolled into
+     * @throws Exception General
+     */
     protected void changeProgram(String value) throws Exception{
         for (short i = 1; i < year; i++) {
             Program failsafe = Programs.getInstance().getProgramByName(value);
@@ -79,6 +84,11 @@ public class Student extends StudentInfo {
         this.program = value;
     }
 
+    /**
+     * Simply changes the group of student
+     * @param value which group to go to
+     * @throws Exception General
+     */
     protected void changeGroup(String value) throws Exception{
         try {
             this.group = Short.parseShort(value);
@@ -87,6 +97,11 @@ public class Student extends StudentInfo {
         }
     }
 
+    /**
+     * Changes the study year of the student. Possible only if certain criteria is met
+     * @param value which year is to be changed
+     * @throws Exception General
+     */
     protected void changeYear(String value) throws Exception{
         short year;
         try {
@@ -116,6 +131,10 @@ public class Student extends StudentInfo {
         advance();
     }
 
+    /**
+     * Checks if all courses are taken and graduates student by changing status
+     * @throws Exception General
+     */
     protected void graduate() throws Exception{
         for (double i : courseGrade.values())
             if (i < 3.0) {
@@ -144,6 +163,11 @@ public class Student extends StudentInfo {
         return res;
     }
 
+    /**
+     * Enrolls a student to a course
+     * @param newCourse Name of the course in which the student should be enrolled
+     * @throws Exception General
+     */
     protected void enrolling(String newCourse) throws Exception{
         if (status != Status.STUDYING)
             throw new Exception("Can't enroll when interrupted");
@@ -161,6 +185,12 @@ public class Student extends StudentInfo {
         throw new Exception("Course unavailable");
     }
 
+    /**
+     *
+     * @param course Name of course to which grade is added
+     * @param grade What grade should be assigned
+     * @throws Exception General
+     */
     protected void addGrade(String course, Double grade) throws Exception{
         if (courseGrade.containsKey(course)) {
             averageGrade = (averageGrade * numOfGrades + grade - courseGrade.get(course)) / numOfGrades;
@@ -170,11 +200,17 @@ public class Student extends StudentInfo {
             throw new Exception("Course not enrolled for student");
     }
 
+    /**
+     * interrupts student's education
+     */
     protected void interrupt() {
         if (status != Status.GRADUATED)
             status = Status.PAUSE;
     }
 
+    /**
+     * Changes status of a student to Studying
+     */
     protected void resume() {
         if (status != Status.GRADUATED)
             status = Status.STUDYING;

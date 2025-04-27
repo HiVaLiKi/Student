@@ -5,6 +5,8 @@ import java.util.List;
 public class Protocol implements Command{
     /**
      * Processes outputing for Student. Filters by Course and sorts by Program then by Year and finally by FN
+     * 1st word - command
+     * 2nd word - name of course to select from
      * @param k Split version of original command @see Controller.open()
      * @param students reference to the Class Handler for Students
      * @return result for output. Sorted and filtered list of students in course from input

@@ -3,7 +3,10 @@ import java.util.List;
 
 public class PrintAll implements Command{
     /**
-     *
+     * Concatenates data for students
+     * 1st word - command
+     * 2nd word - name of program to select from
+     * 3rd word - year to select from
      * @param k Split version of original command @see Controller.open()
      * @param students reference to the Class Handler for Students
      * @return String concatenation of all Student.print() for said year and program

@@ -4,7 +4,7 @@ import java.util.*;
  * This class is the control manager of the System. It handles the input and executes the according commands
  * Used by calling the Controller.open() method
  */
-public class Controller implements CLI{
+public class Controller implements CLI {
     private final HashMap<String, Command> commands;
     private final Students students;
 
@@ -34,24 +34,23 @@ public class Controller implements CLI{
 
     /**
      * input stream for the System. Handles reading and executing of command. If needed ads default filenames when Saving/Loading
+     *
      * @param input String input corresponding to CLI command
      */
     @Override
-    public void open(String input)
-    {
+    public void open(String input) {
         if (input.split(" ")[0].equalsIgnoreCase("Save")) {
             input = input.replaceFirst(" as ", " ");
             if (input.length() == 4)
                 input += " savefile.csv";
         } else if (input.toLowerCase().startsWith(("open")) && input.length() == 4)
-                input += " savefile.csv";
+            input += " savefile.csv";
 
         Command command;
         String[] k = input.split(" ");
         command = getcommand(k);
-        if(command != null)
-        {
-            try{
+        if (command != null) {
+            try {
                 String res = command.execute(k, students);
                 System.out.println(res);//May be returned for outside handling
             } catch (Exception e) {
@@ -62,7 +61,8 @@ public class Controller implements CLI{
 
     /**
      * checks if input corresponds to any command
-     * @param input command split for easier lookup
+     *
+     * @param input command String split for easier lookup
      * @return reference to the object executing the command
      */
     private Command getcommand(String[] input) {

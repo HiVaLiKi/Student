@@ -1,6 +1,8 @@
 public class Print implements Command {
     /**
-     *
+     * Extracts data for a student
+     * 1st word - command
+     * 2nd word - fn of student
      * @param k Split version of original command @see Controller.open()
      * @param students reference to the Class Handler for Students
      * @return Student's data from @see Student.print()

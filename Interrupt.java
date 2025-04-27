@@ -1,9 +1,10 @@
 public class Interrupt implements Command{
     /**
-     *
+     * 1st word - command
+     * 2nd word - fn of student
      * @param k Split version of original command @see Controller.open()
      * @param students reference to the Class Handler for Students
-     * @return successfull
+     * @return successfull message
      * @throws Exception General
      */
     @Override
